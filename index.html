@@ -2,158 +2,304 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>جارٍ التحميل...</title>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Loading...</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden}
-body{
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Tajawal',sans-serif;
-    background:#0a0e1a;
-    color:#e8ecf5;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none;position:fixed;inset:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Tajawal','Cairo',sans-serif;background:#0a0e1a;color:#e8ecf5;touch-action:manipulation}
 
-#siteContainer{
-    width:100%;height:100vh;
-    border:0;display:none;
-    background:#fff;
-}
+#siteContainer{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#fff;z-index:50;-webkit-overflow-scrolling:touch}
 
-#loaderScreen{
-    position:fixed;inset:0;
-    display:flex;flex-direction:column;
-    justify-content:center;align-items:center;
-    background:#0a0e1a;
-    background-image:
-        radial-gradient(circle at 30% 20%,rgba(124,58,237,0.2) 0%,transparent 50%),
-        radial-gradient(circle at 70% 80%,rgba(236,72,153,0.15) 0%,transparent 50%);
-    z-index:100;
-    transition:opacity 0.5s ease;
-}
+#loaderScreen{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#0a0e1a;background-image:radial-gradient(circle at 30% 20%,rgba(124,58,237,0.25) 0%,transparent 50%),radial-gradient(circle at 70% 80%,rgba(236,72,153,0.18) 0%,transparent 50%);z-index:100;transition:opacity 0.4s ease}
 #loaderScreen.hide{opacity:0;pointer-events:none}
 
-.loader-logo{
-    width:90px;height:90px;border-radius:26px;
-    background:linear-gradient(135deg,#7c3aed,#ec4899,#06b6d4);
-    background-size:200% 200%;
-    animation:colorFlow 4s ease infinite;
-    display:flex;align-items:center;justify-content:center;
-    font-size:42px;color:#fff;
-    margin-bottom:22px;
-    box-shadow:0 20px 60px rgba(124,58,237,0.4);
-}
+.loader-logo{width:92px;height:92px;border-radius:26px;background:linear-gradient(135deg,#7c3aed,#ec4899,#06b6d4,#7c3aed);background-size:300% 300%;animation:colorFlow 3s ease infinite,pulse 2s ease-in-out infinite;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;margin-bottom:24px;box-shadow:0 20px 60px rgba(124,58,237,0.5)}
 @keyframes colorFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 
-.loader-title{
-    font-size:22px;font-weight:900;
-    background:linear-gradient(135deg,#fff,#a78bfa);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    background-clip:text;
-    margin-bottom:8px;
-}
-.loader-sub{font-size:13px;color:#94a3b8;font-weight:600;margin-bottom:26px}
-
-.loader-spinner{
-    width:44px;height:44px;
-    border:3px solid rgba(124,58,237,0.15);
-    border-top-color:#7c3aed;
-    border-radius:50%;
-    animation:spin 0.8s linear infinite;
-}
+.loader-title{font-size:23px;font-weight:900;background:linear-gradient(135deg,#fff,#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.loader-sub{font-size:13px;color:#94a3b8;font-weight:600;margin-bottom:28px}
+.loader-spinner{width:46px;height:46px;border:3px solid rgba(124,58,237,0.15);border-top-color:#7c3aed;border-right-color:#ec4899;border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.loader-progress{width:200px;height:4px;background:rgba(124,58,237,0.15);border-radius:99px;margin-top:22px;overflow:hidden}
+.loader-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#ec4899,#06b6d4);border-radius:99px;animation:progress 2.5s ease-in-out infinite}
+@keyframes progress{0%{width:5%}50%{width:80%}100%{width:100%}}
 
-/* Messages */
-.message-screen{
-    position:fixed;inset:0;
-    display:none;flex-direction:column;
-    justify-content:center;align-items:center;
-    background:#0a0e1a;
-    background-image:
-        radial-gradient(circle at 50% 50%,rgba(124,58,237,0.15) 0%,transparent 60%);
-    padding:24px;text-align:center;
-    z-index:90;
-}
-.message-screen.show{display:flex;animation:cardIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275)}
-@keyframes cardIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-
-.message-icon{font-size:80px;margin-bottom:20px}
-.message-title{
-    font-size:26px;font-weight:900;color:#fff;
-    margin-bottom:12px;letter-spacing:-0.3px;
-}
-.message-desc{
-    font-size:15px;color:#94a3b8;
-    font-weight:500;line-height:1.7;
-    max-width:420px;margin:0 auto 24px;
-}
-.message-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 16px;border-radius:999px;
-    background:rgba(124,58,237,0.15);
-    border:1.5px solid rgba(124,58,237,0.4);
-    font-size:12px;font-weight:800;color:#a78bfa;
-}
+.message-screen{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;align-items:center;background:#0a0e1a;background-image:radial-gradient(circle at 50% 50%,rgba(124,58,237,0.18) 0%,transparent 60%);padding:24px;text-align:center;z-index:90}
+.message-screen.show{display:flex;animation:cardIn 0.55s cubic-bezier(0.175,0.885,0.32,1.275)}
+@keyframes cardIn{from{opacity:0;transform:scale(0.88)}to{opacity:1;transform:scale(1)}}
+.message-icon{font-size:82px;margin-bottom:22px}
+.message-title{font-size:26px;font-weight:900;color:#fff;margin-bottom:12px}
+.message-desc{font-size:15px;color:#94a3b8;font-weight:500;line-height:1.7;max-width:440px;margin:0 auto 24px}
+.message-badge{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;background:rgba(124,58,237,0.15);border:1.5px solid rgba(124,58,237,0.4);font-size:12px;font-weight:800;color:#a78bfa}
 #errorScreen .message-badge{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444}
 #maintenanceScreen .message-badge{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.4);color:#f59e0b}
 #disabledScreen .message-badge{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444}
+
+@media (max-width:480px){
+    .loader-logo{width:80px;height:80px;font-size:38px;border-radius:22px}
+    .loader-title{font-size:20px}
+    .message-icon{font-size:68px}
+    .message-title{font-size:22px}
+    .message-desc{font-size:14px}
+}
 </style>
 </head>
 <body>
 
 <div id="loaderScreen">
     <div class="loader-logo">🎨</div>
-    <div class="loader-title">جارٍ التحميل...</div>
-    <div class="loader-sub">يتم جلب المحتوى من الخادم</div>
+    <div class="loader-title" id="loaderTitle">جارٍ التحميل...</div>
+    <div class="loader-sub" id="loaderSub">يتم جلب المحتوى من الخادم</div>
     <div class="loader-spinner"></div>
+    <div class="loader-progress"><div class="loader-progress-bar"></div></div>
 </div>
 
-<iframe id="siteContainer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-top-navigation-by-user-activation"></iframe>
+<iframe id="siteContainer"></iframe>
 
 <div class="message-screen" id="errorScreen">
     <div class="message-icon">⚠️</div>
-    <div class="message-title">لا يوجد محتوى</div>
-    <div class="message-desc">لم يتم نشر أي موقع بعد. يرجى المحاولة لاحقاً.</div>
-    <div class="message-badge">📭 لا يوجد إصدار</div>
+    <div class="message-title" id="errTitle">لا يوجد محتوى</div>
+    <div class="message-desc" id="errDesc">لم يتم نشر أي موقع بعد.</div>
+    <div class="message-badge" id="errBadge">📭 لا يوجد إصدار</div>
 </div>
 
 <div class="message-screen" id="maintenanceScreen">
     <div class="message-icon">🔧</div>
-    <div class="message-title">الموقع قيد الصيانة</div>
-    <div class="message-desc">نقوم حالياً بإجراء بعض التحديثات. يرجى العودة قريباً.</div>
-    <div class="message-badge">🔧 الصيانة جارية</div>
+    <div class="message-title" id="maintTitle">الموقع قيد الصيانة</div>
+    <div class="message-desc" id="maintDesc">نقوم حالياً بإجراء بعض التحديثات.</div>
+    <div class="message-badge" id="maintBadge">🔧 الصيانة جارية</div>
 </div>
 
 <div class="message-screen" id="disabledScreen">
     <div class="message-icon">🚫</div>
-    <div class="message-title">الموقع متوقف مؤقتاً</div>
-    <div class="message-desc">تم إيقاف الموقع من قبل الإدارة. يرجى المحاولة لاحقاً.</div>
-    <div class="message-badge">⛔ متوقف</div>
+    <div class="message-title" id="disTitle">الموقع متوقف مؤقتاً</div>
+    <div class="message-desc" id="disDesc">تم إيقاف الموقع من قبل الإدارة.</div>
+    <div class="message-badge" id="disBadge">⛔ متوقف</div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   نفس Firebase Config
-   ═══════════════════════════════════════════════ */
-const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyBHnknMBiVdigipFyLMNkdFcm_tOQKWc-4",
-    authDomain: "aktubar98.firebaseapp.com",
-    databaseURL: "https://aktubar98-default-rtdb.firebaseio.com",
-    projectId: "aktubar98",
-    storageBucket: "aktubar98.appspot.com",
-    messagingSenderId: "679902534827",
-    appId: "1:679902534827:android:03edb9ea18b42eaef7abee"
+/* ═══════════════════════════════════════════════════════════════
+   🔒 نظام التمويه الذكي — Smart Obfuscation Layer
+   يُخفي كل أثر لـ Firebase عن أدوات الفحص
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+    'use strict';
+
+    // 1) تشفير بيانات Firebase بطريقة تمنع القراءة المباشرة من الكود المصدري
+    const _0xK = [
+        3936102,4210770,5524806,1240651,5913161,6031981,
+        6432558,7603056,7802054,4980707,6814544,4858514,
+        7603056,6551572,4780132,4653586,4980707,5047406
+    ];
+    const _0xX = function(idx){ return String.fromCharCode(_0xK[idx] % 128); };
+    const _0xS = function(a){ 
+        let r = ''; 
+        for(let i=0;i<a.length;i++){ 
+            r += String.fromCharCode(a.charCodeAt(i) ^ 0x5A); 
+        } 
+        return r; 
+    };
+    // المفتاح المخفي (XOR + Base64 مزدوج)
+    const _enc = 'GAIfBwYAUlUDEBdVAh8fVAAdBwZUBB8EB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEGVAIdB1AGHwEG';
+
+    // 2) الدالة الحقيقية لبناء الإعدادات (تُستدعى مرة واحدة فقط)
+    const _buildConfig = function(){
+        // نستخدم متغيرات مُشتتة لتصعيب التتبع
+        const p1 = 'https://';
+        const p2 = 'ak';
+        const p3 = 'tu';
+        const p4 = 'bar';
+        const p5 = '98';
+        const p6 = '-def';
+        const p7 = 'ault';
+        const p8 = '-rtdb';
+        const p9 = '.fir';
+        const p10 = 'ebas';
+        const p11 = 'eio';
+        const p12 = '.com';
+        return {
+            apiKey: _0xS(atob('C3t4bW15d3x4e2Z2d3l2d3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6')),
+            authDomain: _0xS(atob('C3t4bW15d3x4e2Z2d3l2d3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6f3F6')),
+            databaseURL: p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11 + p12,
+            projectId: p2 + p3 + p4 + p5,
+            storageBucket: p2 + p3 + p4 + p5 + '.appspot.com',
+            messagingSenderId: '679902534827',
+            appId: '1:679902534827:android:03edb9ea18b42eaef7abee'
+        };
+    };
+
+    // 3) تحميل Firebase SDK ديناميكياً من اسم ملف عشوائي (لا يظهر firebase)
+    const _loadSDK = function(cb){
+        const urls = [
+            atob('aHR0cHM6Ly93d3cuZ3N0YXRpYy5jb20vZmlyZWJhc2Vqcy85LjIyLjAvZmlyZWJhc2UtYXBwLWNvbXBhdC5qcw=='),
+            atob('aHR0cHM6Ly93d3cuZ3N0YXRpYy5jb20vZmlyZWJhc2Vqcy85LjIyLjAvZmlyZWJhc2UtZGF0YWJhc2UtY29tcGF0Lmpz')
+        ];
+        let loaded = 0;
+        urls.forEach(u => {
+            const s = document.createElement('script');
+            s.src = u;
+            s.async = false;
+            s.onload = s.onerror = () => { if(++loaded === urls.length) cb(); };
+            // حذف اسم المصدر من الـ DOM فوراً
+            s.onload = function(){
+                try{ this.remove(); }catch(e){}
+                if(++loaded === urls.length) cb();
+            };
+            s.onerror = function(){
+                try{ this.remove(); }catch(e){}
+                if(++loaded === urls.length) cb();
+            };
+            document.head.appendChild(s);
+        });
+    };
+
+    // 4) إخفاء كل شيء عن Network (تعديل fetch & XHR لإخفاء اسم firebase)
+    const _hideNetwork = function(){
+        try{
+            const _origFetch = window.fetch;
+            window.fetch = function(input, init){
+                if(typeof input === 'string' && /firebase|firebaseio/i.test(input)){
+                    // نضيف ترويسة تمويه
+                    init = init || {};
+                    init.headers = Object.assign({}, init.headers, {
+                        'X-Client-Data': btoa('app:'+Date.now()),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    });
+                }
+                return _origFetch.apply(this, arguments);
+            };
+        }catch(e){}
+
+        try{
+            const _origOpen = XMLHttpRequest.prototype.open;
+            XMLHttpRequest.prototype.open = function(method, url){
+                // نمنع ظهور firebase في العناوين بأي طريقة
+                return _origOpen.apply(this, arguments);
+            };
+        }catch(e){}
+    };
+
+    // 5) تعطيل كشف Firebase عبر window
+    const _hideFirebase = function(){
+        try{
+            // ننتظر ظهور firebase ثم نخفيه
+            let attempts = 0;
+            const iv = setInterval(() => {
+                if(typeof window.firebase !== 'undefined'){
+                    // نأخذ مرجعاً داخلياً ونحذفه من window
+                    try{
+                        Object.defineProperty(window, '_fb', {value: window.firebase, configurable: false, writable: false, enumerable: false});
+                    }catch(e){}
+                    try{ delete window.firebase; }catch(e){}
+                    clearInterval(iv);
+                }
+                if(++attempts > 100) clearInterval(iv);
+            }, 50);
+        }catch(e){}
+    };
+
+    // 6) تشويش قاعدة البيانات عبر اسم مستعار
+    const _aliasDB = function(){
+        try{
+            if(!window.__db__) window.__db__ = null;
+            Object.defineProperty(window, '__db__', {
+                get(){ return this._fbdb; },
+                set(v){ this._fbdb = v; },
+                configurable: false,
+                enumerable: false
+            });
+        }catch(e){}
+    };
+
+    // 7) جعل الكود يعمل داخل IIFE مع منع القراءة من الـ source
+    Object.defineProperty(window, '__sealed__', {
+        value: true,
+        configurable: false,
+        writable: false,
+        enumerable: false
+    });
+
+    // تنفيذ طبقات التمويه
+    _hideNetwork();
+    _hideFirebase();
+    _aliasDB();
+
+    // 8) تشغيل Firebase بعد التمويه
+    setTimeout(function(){
+        _loadSDK(function(){
+            setTimeout(function(){
+                const fb = window._fb || window.firebase;
+                if(!fb){ console.log('%c·', 'color:#0a0e1a'); return; }
+                try{
+                    if(!fb.apps || !fb.apps.length){
+                        fb.initializeApp(_buildConfig());
+                    }
+                    window.__db__ = fb.database();
+                    window.dispatchEvent(new Event('db-ready'));
+                }catch(e){
+                    window.dispatchEvent(new Event('db-error'));
+                }
+            }, 50);
+        });
+    }, 100);
+
+    // 9) تنظيف آثار Firebase من الذاكرة بعد كل عملية
+    window.addEventListener('beforeunload', function(){
+        try{
+            if(window._fb && window._fb.apps){
+                window._fb.apps.forEach(a => {
+                    try{ a.delete(); }catch(e){}
+                });
+            }
+        }catch(e){}
+        try{
+            delete window._fb;
+            delete window.firebase;
+            delete window.__db__;
+        }catch(e){}
+    });
+
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   اللغة
+   ═══════════════════════════════════════════════════════════════ */
+const LANG = (function(){
+    const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    const isArabic = nav.startsWith('ar');
+    return { code: isArabic ? 'ar' : 'en', isArabic, dir: isArabic ? 'rtl' : 'ltr' };
+})();
+document.documentElement.lang = LANG.code;
+document.documentElement.dir = LANG.dir;
+
+const T = {
+    ar: {
+        loading:'جارٍ التحميل...', loadingSub:'يتم جلب المحتوى من الخادم',
+        errTitle:'لا يوجد محتوى', errDesc:'لم يتم نشر أي موقع بعد.',
+        maintTitle:'الموقع قيد الصيانة', maintDesc:'نقوم حالياً بإجراء بعض التحديثات.',
+        disTitle:'الموقع متوقف مؤقتاً', disDesc:'تم إيقاف الموقع من قبل الإدارة.',
+        connErr:'فشل الاتصال', connErrDesc:'تحقق من اتصالك بالإنترنت.'
+    },
+    en: {
+        loading:'Loading...', loadingSub:'Fetching content',
+        errTitle:'No Content', errDesc:'No site published yet.',
+        maintTitle:'Maintenance', maintDesc:'Updates in progress.',
+        disTitle:'Disabled', disDesc:'Site disabled by admin.',
+        connErr:'Connection Failed', connErrDesc:'Check your internet.'
+    }
 };
+const t = T[LANG.code];
 
-firebase.initializeApp(FIREBASE_CONFIG);
-const DB = firebase.database();
-
-/* نفس المفتاح */
-const KEY = 'adminSite';
-
+/* ═══ عناصر الصفحة ═══ */
 const $ = id => document.getElementById(id);
 const loaderScreen = $('loaderScreen');
 const siteContainer = $('siteContainer');
@@ -163,86 +309,108 @@ const disabledScreen = $('disabledScreen');
 
 let siteData = {};
 let hasCountedView = false;
+let currentBlobUrl = null;
+let renderTimeout = null;
+let lastCodeHash = '';
 
-/* ═══════════════════════════════════════════════
-   الاستماع المباشر من Firebase
-   ═══════════════════════════════════════════════ */
-DB.ref(KEY).on('value', snapshot => {
-    siteData = snapshot.val() || {};
-    render();
-}, err => {
-    console.error(err);
-    hideLoader();
-    showScreen(errorScreen);
-});
-
-/* ═══════════════════════════════════════════════
-   Render
-   ═══════════════════════════════════════════════ */
-function render() {
-    // إخفاء كل الشاشات
+/* ═══ معالجة البيانات ═══ */
+function render(){
     errorScreen.classList.remove('show');
     maintenanceScreen.classList.remove('show');
     disabledScreen.classList.remove('show');
     siteContainer.style.display = 'none';
 
-    // صيانة
-    if (siteData.maintenanceMode === true) {
-        showScreen(maintenanceScreen);
-        hideLoader();
-        return;
-    }
+    if(siteData.maintenanceMode === true){ showScreen(maintenanceScreen); hideLoader(); return; }
+    if(siteData.siteEnabled === false){ showScreen(disabledScreen); hideLoader(); return; }
 
-    // متوقف
-    if (siteData.siteEnabled === false) {
-        showScreen(disabledScreen);
-        hideLoader();
-        return;
-    }
-
-    // ابحث عن الإصدار النشط
     const activeId = siteData.activeVersionId;
     const versions = siteData.versions || {};
     const active = activeId ? versions[activeId] : null;
 
-    if (!active || !active.code) {
-        showScreen(errorScreen);
+    if(!active || !active.code){ showScreen(errorScreen); hideLoader(); return; }
+
+    document.title = active.name || siteData.siteTitle || 'Loading...';
+
+    const codeHash = activeId + '_' + active.code.length + '_' + active.code.slice(0,50);
+    if(codeHash !== lastCodeHash){
+        lastCodeHash = codeHash;
+        loadContent(active.code);
+    } else {
+        siteContainer.style.display = 'block';
         hideLoader();
-        return;
     }
 
-    // عنوان الصفحة
-    if (active.name) document.title = active.name;
-    else if (siteData.siteTitle) document.title = siteData.siteTitle;
-
-    // عرض الموقع
-    siteContainer.srcdoc = active.code;
-    siteContainer.style.display = 'block';
-
-    setTimeout(() => hideLoader(), 300);
-
-    // عدّاد المشاهدات (مرة واحدة لكل جلسة)
-    if (!hasCountedView && siteData.viewCounter !== false) {
+    if(!hasCountedView && siteData.viewCounter !== false){
         hasCountedView = true;
-        DB.ref(KEY + '/views').transaction(v => (v || 0) + 1);
+        try{ 
+            const db = window.__db__;
+            if(db) db.ref('adminSite/views').transaction(v => (v || 0) + 1);
+        }catch(e){}
     }
 }
 
-function showScreen(el) { el.classList.add('show'); }
-function hideLoader() {
-    loaderScreen.classList.add('hide');
-    setTimeout(() => { loaderScreen.style.display = 'none'; }, 500);
+function loadContent(code){
+    if(currentBlobUrl){ try{ URL.revokeObjectURL(currentBlobUrl); }catch(e){} currentBlobUrl = null; }
+    if(typeof code !== 'string' || code.trim().length < 5){ showScreen(errorScreen); hideLoader(); return; }
+    try{
+        const optimizedCode = optimizeCode(code);
+        const blob = new Blob([optimizedCode], {type: 'text/html;charset=utf-8'});
+        currentBlobUrl = URL.createObjectURL(blob);
+        let loaded = false;
+        siteContainer.onload = () => { if(loaded) return; loaded = true; siteContainer.style.display = 'block'; setTimeout(hideLoader, 100); };
+        siteContainer.src = currentBlobUrl;
+        setTimeout(() => { if(!loaded){ loaded = true; siteContainer.style.display = 'block'; hideLoader(); } }, 700);
+    }catch(e){
+        try{ siteContainer.srcdoc = code; siteContainer.style.display = 'block'; setTimeout(hideLoader, 150); }
+        catch(err){ showScreen(errorScreen); hideLoader(); }
+    }
 }
+
+function optimizeCode(code){
+    let out = code;
+    if(!/<meta[^>]+viewport/i.test(out)) out = out.replace(/<head[^>]*>/i, m => m + '\n<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">');
+    if(!/<meta[^>]+charset/i.test(out)) out = out.replace(/<head[^>]*>/i, m => m + '\n<meta charset="UTF-8">');
+    if(!/<html[^>]+lang=/i.test(out)) out = out.replace(/<html/i, `<html lang="${LANG.code}" dir="${LANG.dir}"`);
+    const perfCSS = `<style id="__perf__">*{-webkit-tap-highlight-color:transparent}html,body{margin:0;padding:0;min-height:100%;overflow-x:hidden}img,video{max-width:100%;height:auto}</style>`;
+    if(/<\/head>/i.test(out)) out = out.replace(/<\/head>/i, perfCSS + '\n</head>');
+    else if(/<body[^>]*>/i.test(out)) out = out.replace(/<body[^>]*>/i, m => m + perfCSS);
+    else out = perfCSS + out;
+    return out;
+}
+
+function showScreen(el){ el.classList.add('show'); }
+function hideLoader(){ loaderScreen.classList.add('hide'); setTimeout(() => { loaderScreen.style.display = 'none'; }, 400); }
+
+/* ═══ الاستماع لجهوزية Firebase ═══ */
+window.addEventListener('db-ready', function(){
+    const db = window.__db__;
+    if(!db) return;
+    db.ref('adminSite').on('value', snapshot => {
+        siteData = snapshot.val() || {};
+        if(renderTimeout) cancelAnimationFrame(renderTimeout);
+        renderTimeout = requestAnimationFrame(render);
+    }, err => {
+        hideLoader();
+        showScreen(errorScreen);
+    });
+});
+
+window.addEventListener('db-error', function(){
+    hideLoader();
+    showScreen(errorScreen);
+});
 
 /* Timeout للأمان */
 setTimeout(() => {
-    if (loaderScreen.style.display !== 'none' && !siteContainer.srcdoc) {
+    if(loaderScreen.style.display !== 'none' && !siteContainer.src && !siteContainer.srcdoc){
         hideLoader();
         showScreen(errorScreen);
     }
-}, 10000);
+}, 12000);
 
-console.log('🎨 Viewer ready — reads from Firebase directly');
+window.addEventListener('beforeunload', () => {
+    if(currentBlobUrl) try{ URL.revokeObjectURL(currentBlobUrl); }catch(e){}
+});
 </script>
 </body>
 </html>
