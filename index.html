@@ -10,7 +10,6 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; img-src * data: blob:; frame-src *; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; font-src * data:;">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <title>Loading...</title>
 
@@ -18,42 +17,31 @@
 <link rel="dns-prefetch" href="https://aktubar98-default-rtdb.firebaseio.com">
 <link rel="preconnect" href="https://aktubar98-default-rtdb.firebaseio.com" crossorigin>
 
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{
-    height:100%;
-    width:100%;
-    overflow:hidden;
+    height:100%;width:100%;overflow:hidden;
     overscroll-behavior:none;
-    -webkit-user-select:none;
-    user-select:none;
-    position:fixed;
-    inset:0;
+    -webkit-user-select:none;user-select:none;
+    position:fixed;inset:0;
 }
 body{
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Tajawal','Cairo',sans-serif;
-    background:#0a0e1a;
-    color:#e8ecf5;
-    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    background:#0a0e1a;color:#e8ecf5;
     touch-action:manipulation;
 }
 
 #siteContainer{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    border:0;
-    display:none;
-    background:#fff;
+    position:fixed;inset:0;
+    width:100%;height:100%;
+    border:0;display:none;background:#fff;
     z-index:50;
     -webkit-overflow-scrolling:touch;
 }
 
-/* ═══ Loader ═══ */
 #loaderScreen{
     position:fixed;inset:0;
     display:flex;flex-direction:column;
@@ -65,7 +53,6 @@ body{
         radial-gradient(circle at 50% 50%,rgba(6,182,212,0.1) 0%,transparent 70%);
     z-index:100;
     transition:opacity 0.4s ease;
-    will-change:opacity;
 }
 #loaderScreen.hide{opacity:0;pointer-events:none}
 
@@ -75,10 +62,8 @@ body{
     background-size:300% 300%;
     animation:colorFlow 3s ease infinite, pulse 2s ease-in-out infinite;
     display:flex;align-items:center;justify-content:center;
-    font-size:44px;color:#fff;
-    margin-bottom:24px;
+    font-size:44px;color:#fff;margin-bottom:24px;
     box-shadow:0 20px 60px rgba(124,58,237,0.5),0 0 40px rgba(236,72,153,0.3);
-    will-change:transform,background-position;
 }
 @keyframes colorFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
@@ -87,65 +72,44 @@ body{
     font-size:23px;font-weight:900;
     background:linear-gradient(135deg,#fff,#a78bfa,#ec4899);
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    background-clip:text;
-    margin-bottom:10px;letter-spacing:-0.3px;
+    background-clip:text;margin-bottom:10px;
 }
 .loader-sub{font-size:13px;color:#94a3b8;font-weight:600;margin-bottom:28px}
 
 .loader-spinner{
     width:46px;height:46px;
     border:3px solid rgba(124,58,237,0.15);
-    border-top-color:#7c3aed;
-    border-right-color:#ec4899;
-    border-radius:50%;
-    animation:spin 0.7s linear infinite;
-    will-change:transform;
+    border-top-color:#7c3aed;border-right-color:#ec4899;
+    border-radius:50%;animation:spin 0.7s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .loader-progress{
     width:200px;height:4px;
     background:rgba(124,58,237,0.15);
-    border-radius:99px;
-    margin-top:22px;
-    overflow:hidden;
+    border-radius:99px;margin-top:22px;overflow:hidden;
 }
 .loader-progress-bar{
-    height:100%;
-    width:0%;
+    height:100%;width:0%;
     background:linear-gradient(90deg,#7c3aed,#ec4899,#06b6d4);
-    border-radius:99px;
-    transition:width 0.3s ease;
-    animation:progress 2.5s ease-in-out infinite;
+    border-radius:99px;animation:progress 2.5s ease-in-out infinite;
 }
 @keyframes progress{0%{width:5%}50%{width:80%}100%{width:100%}}
 
-/* ═══ Message Screens ═══ */
 .message-screen{
     position:fixed;inset:0;
     display:none;flex-direction:column;
     justify-content:center;align-items:center;
     background:#0a0e1a;
-    background-image:
-        radial-gradient(circle at 50% 50%,rgba(124,58,237,0.18) 0%,transparent 60%);
-    padding:24px;text-align:center;
-    z-index:90;
+    background-image:radial-gradient(circle at 50% 50%,rgba(124,58,237,0.18) 0%,transparent 60%);
+    padding:24px;text-align:center;z-index:90;
 }
 .message-screen.show{display:flex;animation:cardIn 0.55s cubic-bezier(0.175,0.885,0.32,1.275)}
 @keyframes cardIn{from{opacity:0;transform:scale(0.88)}to{opacity:1;transform:scale(1)}}
 
-.message-icon{font-size:82px;margin-bottom:22px;animation:bounce 2s ease-in-out infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-.message-title{
-    font-size:26px;font-weight:900;color:#fff;
-    margin-bottom:12px;letter-spacing:-0.3px;
-}
-.message-desc{
-    font-size:15px;color:#94a3b8;
-    font-weight:500;line-height:1.7;
-    max-width:440px;margin:0 auto 24px;
-}
+.message-icon{font-size:82px;margin-bottom:22px}
+.message-title{font-size:26px;font-weight:900;color:#fff;margin-bottom:12px}
+.message-desc{font-size:15px;color:#94a3b8;font-weight:500;line-height:1.7;max-width:440px;margin:0 auto 24px}
 .message-badge{
     display:inline-flex;align-items:center;gap:6px;
     padding:9px 18px;border-radius:999px;
@@ -157,7 +121,6 @@ body{
 #maintenanceScreen .message-badge{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.4);color:#f59e0b}
 #disabledScreen .message-badge{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444}
 
-/* Responsive */
 @media (max-width:480px){
     .loader-logo{width:80px;height:80px;font-size:38px;border-radius:22px}
     .loader-title{font-size:20px}
@@ -183,11 +146,7 @@ body{
     <div class="loader-progress"><div class="loader-progress-bar"></div></div>
 </div>
 
-<iframe id="siteContainer" 
-    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-top-navigation-by-user-activation allow-popups-to-escape-sandbox"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-    referrerpolicy="no-referrer-when-downgrade"
-    loading="eager"></iframe>
+<iframe id="siteContainer"></iframe>
 
 <div class="message-screen" id="errorScreen">
     <div class="message-icon">⚠️</div>
@@ -211,93 +170,47 @@ body{
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════
-   🛡️ الحماية والأمان - Anti-Debug / Anti-Tamper
-   ═══════════════════════════════════════════════════════════ */
+/* ═══ الحماية (خفيفة - بدون كسر التطبيق) ═══ */
 (function(){
     'use strict';
-    // منع Ctrl+U / F12 / Right Click
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
         if(e.key === 'F12' ||
            (e.ctrlKey && e.shiftKey && ['I','J','C','i','j','c'].includes(e.key)) ||
-           (e.ctrlKey && ['U','u','S','s','P','p'].includes(e.key))) {
+           (e.ctrlKey && ['U','u','S','s'].includes(e.key))) {
             e.preventDefault();
-            return false;
         }
     });
-    // كشف DevTools بطريقة خفيفة (بدون تعطيل)
-    let devtoolsOpen = false;
-    const threshold = 160;
-    setInterval(() => {
-        const w = window.outerWidth - window.innerWidth;
-        const h = window.outerHeight - window.innerHeight;
-        if((w > threshold || h > threshold) && !devtoolsOpen){
-            devtoolsOpen = true;
-        } else if(w < threshold && h < threshold && devtoolsOpen){
-            devtoolsOpen = false;
-        }
-    }, 1500);
-    // حماية ضد iframe hijacking
-    if(window.top !== window.self){
-        try{ window.top.location = window.self.location; }catch(e){}
-    }
 })();
 
-/* ═══════════════════════════════════════════════════════════
-   🌍 كشف اللغة تلقائياً (عربي / إنجليزي)
-   ═══════════════════════════════════════════════════════════ */
+/* ═══ كشف اللغة ═══ */
 const LANG = (function(){
-    const nav = navigator.language || navigator.userLanguage || 'en';
-    const isArabic = /^ar/i.test(nav);
-    return {
-        code: isArabic ? 'ar' : 'en',
-        isArabic: isArabic,
-        dir: isArabic ? 'rtl' : 'ltr'
-    };
+    const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    const isArabic = nav.startsWith('ar');
+    return { code: isArabic ? 'ar' : 'en', isArabic, dir: isArabic ? 'rtl' : 'ltr' };
 })();
 
-// تطبيق اللغة فوراً على الصفحة
 document.documentElement.lang = LANG.code;
 document.documentElement.dir = LANG.dir;
 
 const T = {
     ar: {
-        loading: 'جارٍ التحميل...',
-        loadingSub: 'يتم جلب المحتوى من الخادم',
-        errTitle: 'لا يوجد محتوى',
-        errDesc: 'لم يتم نشر أي موقع بعد. يرجى المحاولة لاحقاً.',
-        errBadge: '📭 لا يوجد إصدار',
-        maintTitle: 'الموقع قيد الصيانة',
-        maintDesc: 'نقوم حالياً بإجراء بعض التحديثات. يرجى العودة قريباً.',
-        maintBadge: '🔧 الصيانة جارية',
-        disTitle: 'الموقع متوقف مؤقتاً',
-        disDesc: 'تم إيقاف الموقع من قبل الإدارة. يرجى المحاولة لاحقاً.',
-        disBadge: '⛔ متوقف',
-        connErr: 'فشل الاتصال بالخادم',
-        connErrDesc: 'تحقق من اتصالك بالإنترنت ثم أعد المحاولة.',
-        connBadge: '📡 خطأ في الشبكة'
+        loading:'جارٍ التحميل...', loadingSub:'يتم جلب المحتوى من الخادم',
+        errTitle:'لا يوجد محتوى', errDesc:'لم يتم نشر أي موقع بعد. يرجى المحاولة لاحقاً.', errBadge:'📭 لا يوجد إصدار',
+        maintTitle:'الموقع قيد الصيانة', maintDesc:'نقوم حالياً بإجراء بعض التحديثات. يرجى العودة قريباً.', maintBadge:'🔧 الصيانة جارية',
+        disTitle:'الموقع متوقف مؤقتاً', disDesc:'تم إيقاف الموقع من قبل الإدارة. يرجى المحاولة لاحقاً.', disBadge:'⛔ متوقف',
+        connErr:'فشل الاتصال بالخادم', connErrDesc:'تحقق من اتصالك بالإنترنت ثم أعد المحاولة.', connBadge:'📡 خطأ في الشبكة'
     },
     en: {
-        loading: 'Loading...',
-        loadingSub: 'Fetching content from server',
-        errTitle: 'No Content',
-        errDesc: 'No site has been published yet. Please try again later.',
-        errBadge: '📭 No Release',
-        maintTitle: 'Under Maintenance',
-        maintDesc: 'We are performing some updates. Please come back soon.',
-        maintBadge: '🔧 Maintenance in Progress',
-        disTitle: 'Site Temporarily Disabled',
-        disDesc: 'The site has been disabled by the administration. Please try again later.',
-        disBadge: '⛔ Disabled',
-        connErr: 'Server Connection Failed',
-        connErrDesc: 'Check your internet connection and try again.',
-        connBadge: '📡 Network Error'
+        loading:'Loading...', loadingSub:'Fetching content from server',
+        errTitle:'No Content', errDesc:'No site has been published yet. Please try again later.', errBadge:'📭 No Release',
+        maintTitle:'Under Maintenance', maintDesc:'We are performing some updates. Please come back soon.', maintBadge:'🔧 Maintenance in Progress',
+        disTitle:'Site Temporarily Disabled', disDesc:'The site has been disabled by the administration. Please try again later.', disBadge:'⛔ Disabled',
+        connErr:'Server Connection Failed', connErrDesc:'Check your internet connection and try again.', connBadge:'📡 Network Error'
     }
 };
 const t = T[LANG.code];
 
-// تطبيق النصوص
 function applyTranslations(){
     document.getElementById('loaderTitle').textContent = t.loading;
     document.getElementById('loaderSub').textContent = t.loadingSub;
@@ -313,9 +226,7 @@ function applyTranslations(){
 }
 applyTranslations();
 
-/* ═══════════════════════════════════════════════════════════
-   🔥 Firebase
-   ═══════════════════════════════════════════════════════════ */
+/* ═══ Firebase ═══ */
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyBHnknMBiVdigipFyLMNkdFcm_tOQKWc-4",
     authDomain: "aktubar98.firebaseapp.com",
@@ -340,8 +251,9 @@ let siteData = {};
 let hasCountedView = false;
 let currentBlobUrl = null;
 let renderTimeout = null;
+let lastCodeHash = '';
 
-/* ═══ تهيئة Firebase بعد تحميل SDK ═══ */
+/* تهيئة Firebase */
 function initFirebase(){
     if(typeof firebase === 'undefined'){
         console.error('Firebase SDK not loaded');
@@ -358,12 +270,9 @@ function initFirebase(){
     }
 }
 
-/* ═══ بدء الاستماع المباشر (بدون تأخير) ═══ */
 function startListener(){
-    // استخدام .on مع cache للأداء العالي
     DB.ref(KEY).on('value', snapshot => {
         siteData = snapshot.val() || {};
-        // استخدام requestAnimationFrame لتحسين الأداء
         if(renderTimeout) cancelAnimationFrame(renderTimeout);
         renderTimeout = requestAnimationFrame(render);
     }, err => {
@@ -372,7 +281,6 @@ function startListener(){
     });
 }
 
-/* ═══ عرض شاشة خطأ الاتصال ═══ */
 function showConnError(){
     $('errTitle').textContent = t.connErr;
     $('errDesc').textContent = t.connErrDesc;
@@ -381,28 +289,25 @@ function showConnError(){
     showScreen(errorScreen);
 }
 
-/* ═══ Render الرئيسي ═══ */
+/* Render */
 function render(){
     errorScreen.classList.remove('show');
     maintenanceScreen.classList.remove('show');
     disabledScreen.classList.remove('show');
     siteContainer.style.display = 'none';
 
-    // صيانة
     if(siteData.maintenanceMode === true){
         showScreen(maintenanceScreen);
         hideLoader();
         return;
     }
 
-    // متوقف
     if(siteData.siteEnabled === false){
         showScreen(disabledScreen);
         hideLoader();
         return;
     }
 
-    // الإصدار النشط
     const activeId = siteData.activeVersionId;
     const versions = siteData.versions || {};
     const active = activeId ? versions[activeId] : null;
@@ -413,85 +318,93 @@ function render(){
         return;
     }
 
-    // العنوان
     const title = active.name || siteData.siteTitle || 'Loading...';
     document.title = title;
 
-    // تحميل المحتوى في iframe (طريقة أسرع باستخدام Blob URL)
-    loadContent(active.code);
+    // تحميل المحتوى فقط إذا تغيّر
+    const codeHash = activeId + '_' + active.code.length + '_' + active.code.slice(0,50);
+    if(codeHash !== lastCodeHash){
+        lastCodeHash = codeHash;
+        loadContent(active.code);
+    } else {
+        siteContainer.style.display = 'block';
+        hideLoader();
+    }
 
-    // عدّاد المشاهدات
     if(!hasCountedView && siteData.viewCounter !== false){
         hasCountedView = true;
-        try{
-            DB.ref(KEY + '/views').transaction(v => (v || 0) + 1);
-        }catch(e){}
+        try{ DB.ref(KEY + '/views').transaction(v => (v || 0) + 1); }catch(e){}
     }
 }
 
-/* ═══ تحميل المحتوى (Blob URL أسرع من srcdoc) ═══ */
+/* تحميل المحتوى */
 function loadContent(code){
-    // تنظيف URL السابق
     if(currentBlobUrl){
-        URL.revokeObjectURL(currentBlobUrl);
+        try{ URL.revokeObjectURL(currentBlobUrl); }catch(e){}
         currentBlobUrl = null;
     }
 
+    // تحقق من أن الكود HTML فعلي
+    if(typeof code !== 'string' || code.trim().length < 5){
+        showScreen(errorScreen);
+        hideLoader();
+        return;
+    }
+
     try{
-        // تحسين الكود للسرعة والتوافق
         const optimizedCode = optimizeCode(code);
         const blob = new Blob([optimizedCode], {type: 'text/html;charset=utf-8'});
         currentBlobUrl = URL.createObjectURL(blob);
 
-        // عند التحميل الكامل
+        let loaded = false;
         siteContainer.onload = () => {
+            if(loaded) return;
+            loaded = true;
             siteContainer.style.display = 'block';
-            setTimeout(hideLoader, 150);
+            setTimeout(hideLoader, 100);
         };
 
         siteContainer.src = currentBlobUrl;
 
-        // fallback في حال عدم إطلاق onload
+        // fallback مضمون
         setTimeout(() => {
-            if(siteContainer.style.display !== 'block'){
+            if(!loaded){
+                loaded = true;
                 siteContainer.style.display = 'block';
                 hideLoader();
             }
-        }, 800);
+        }, 700);
     }catch(e){
-        console.error('Load content error:', e);
-        // fallback إلى srcdoc
-        siteContainer.srcdoc = code;
-        siteContainer.style.display = 'block';
-        setTimeout(hideLoader, 200);
+        console.error('Load error:', e);
+        try{
+            siteContainer.srcdoc = code;
+            siteContainer.style.display = 'block';
+            setTimeout(hideLoader, 150);
+        }catch(err){
+            showScreen(errorScreen);
+            hideLoader();
+        }
     }
 }
 
-/* ═══ تحسين كود الموقع للسرعة والتوافق ═══ */
+/* تحسين الكود */
 function optimizeCode(code){
     let out = code;
 
-    // 1. إضافة meta viewport إذا لم تكن موجودة
     if(!/<meta[^>]+viewport/i.test(out)){
         out = out.replace(/<head[^>]*>/i, m => m + '\n<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">');
     }
-
-    // 2. إضافة meta charset إذا لم تكن موجودة
     if(!/<meta[^>]+charset/i.test(out)){
         out = out.replace(/<head[^>]*>/i, m => m + '\n<meta charset="UTF-8">');
     }
-
-    // 3. تعيين اللغة تلقائياً للموقع الداخلي
     if(!/<html[^>]+lang=/i.test(out)){
         out = out.replace(/<html/i, `<html lang="${LANG.code}" dir="${LANG.dir}"`);
     }
 
-    // 4. إضافة CSS لتحسين العرض على جميع الأجهزة
     const perfCSS = `<style id="__perf__">
 *{-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;min-height:100%;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 img,video{max-width:100%;height:auto}
-body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 </style>`;
 
     if(/<\/head>/i.test(out)){
@@ -505,46 +418,32 @@ body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-i
     return out;
 }
 
-/* ═══ إظهار/إخفاء الشاشات ═══ */
 function showScreen(el){ el.classList.add('show'); }
 function hideLoader(){
     loaderScreen.classList.add('hide');
     setTimeout(() => { loaderScreen.style.display = 'none'; }, 400);
 }
 
-/* ═══ Timeout للأمان (أسرع) ═══ */
+/* Timeout للأمان */
 setTimeout(() => {
     if(loaderScreen.style.display !== 'none' && !siteContainer.src && !siteContainer.srcdoc){
         showConnError();
     }
-}, 8000);
+}, 10000);
 
-/* ═══ بدء التهيئة عند تحميل SDK ═══ */
+/* بدء التهيئة */
 if(document.readyState === 'complete'){
     initFirebase();
 } else {
     window.addEventListener('load', initFirebase, {once: true});
-    // fallback: محاولة التهيئة حتى لو تأخر load
-    setTimeout(() => {
-        if(!DB) initFirebase();
-    }, 1500);
+    setTimeout(() => { if(!DB) initFirebase(); }, 1500);
 }
 
-/* ═══ تنظيف عند مغادرة الصفحة ═══ */
+/* تنظيف */
 window.addEventListener('beforeunload', () => {
-    if(currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
+    if(currentBlobUrl) try{ URL.revokeObjectURL(currentBlobUrl); }catch(e){}
     try{ if(DB) DB.ref(KEY).off(); }catch(e){}
 });
-
-/* ═══ فتح الموقع بشاشة كاملة عند أول لمسة (Mobile) ═══ */
-document.addEventListener('touchstart', function goFS(){
-    document.removeEventListener('touchstart', goFS);
-    const el = document.documentElement;
-    if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else if(el.mozRequestFullScreen) el.mozRequestFullScreen();
-    else if(el.msRequestFullscreen) el.msRequestFullscreen();
-}, {once: true, passive: true});
 
 console.log('%c🎨 Viewer Ready — ' + LANG.code.toUpperCase(), 'color:#7c3aed;font-weight:bold;font-size:14px');
 </script>
